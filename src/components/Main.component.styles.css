@@ -1,0 +1,7 @@
+.container {
+  font-family: 'Courier New', Courier, monospace;
+}
+.view {
+  margin: auto;
+  max-width: 80%;
+}

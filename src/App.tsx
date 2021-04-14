@@ -5,7 +5,6 @@ import MainComponnet from './components/Main.component'
 function App() {
   return (
     <div className="App">
-      hello
        <MainComponnet />
     </div>
   );
