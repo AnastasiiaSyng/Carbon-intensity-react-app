@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Main.component.styles.css'
 import { BoxLoading } from 'react-loadingg';
-import {  VictoryBar, VictoryChart, VictoryAxis } from 'victory';
+import {  VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
 
 
 const setStartDate = () => {
@@ -34,17 +34,21 @@ const MainComponnet = () => {
     return (
         <div className='container'>
             <h1>Carbon intensity level for last 24 hours</h1>
-            {loading && <BoxLoading size='large' color='blue' /> }
+            {loading && <BoxLoading size='large' color='#f8e9a1' /> }
           <div className='view'>
                 {!loading &&
-                    <VictoryChart>
-                    <VictoryAxis dependentAxis />                     
-                    <VictoryBar
-                        style={{ data: { fill: "#c43a31" } }}
-                        data={result}
-                        x="from"
-                        y="intensity.actual"
-                    />
+                    <VictoryChart theme={VictoryTheme.material}>
+                        <VictoryAxis dependentAxis />   
+                        {/* <VictoryAxis 
+                            padding={10}
+                            tickFormat={(y) => (`${y.slice(11,16)}`)}
+                        />                      */}
+                        <VictoryBar
+                            style={{ data: { fill: "#f76c6c", marginRight: 10} }}
+                            data={result}
+                            x="from"
+                            y="intensity.actual"
+                        />
                     </VictoryChart>
                 }
           </div>
