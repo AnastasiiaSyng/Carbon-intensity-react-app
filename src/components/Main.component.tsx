@@ -39,10 +39,11 @@ const MainComponnet = () => {
                 {!loading &&
                     <VictoryChart theme={VictoryTheme.material}>
                         <VictoryAxis dependentAxis />   
-                        {/* <VictoryAxis 
+                        <VictoryAxis 
+                            fixLabelOverlap
                             padding={10}
                             tickFormat={(y) => (`${y.slice(11,16)}`)}
-                        />                      */}
+                        />                     
                         <VictoryBar
                             style={{ data: { fill: "#f76c6c", marginRight: 10} }}
                             data={result}
