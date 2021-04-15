@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Main.component.styles.css'
 import { BoxLoading } from 'react-loadingg';
-import {  VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
+import {  VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryTooltip } from 'victory';
 
 
 const setStartDate = () => {
@@ -29,11 +29,12 @@ const MainComponnet = () => {
                 setState(prevState => {
                     return {...prevState, result: response.data, loading: false}})
             });
-    }, [endDate, startDate])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     
     return (
         <div className='container'>
-            <h1>Carbon intensity level for last 24 hours</h1>
+            <h1>Carbon intensity level for the last 24 hours</h1>
             {loading && <BoxLoading size='large' color='#f8e9a1' /> }
           <div className='view'>
                 {!loading &&
@@ -45,6 +46,26 @@ const MainComponnet = () => {
                             tickFormat={(y) => (`${y.slice(11,16)}`)}
                         />                     
                         <VictoryBar
+                           labels={({ datum }) => `Date: ${datum.from} int: ${datum.intensity.actual}`}
+                           labelComponent={
+                             <VictoryTooltip
+                               flyoutWidth={60}
+                               flyoutHeight={25}
+                               cornerRadius={5}
+                               pointerLength={20}
+                               flyoutStyle={{
+                                 stroke: "#868C97",
+                                 strokeWidth: 2,
+                                 fill: "#FFFFFF"
+                               }}
+                               style={{
+                                 fill: "#868C97",
+                                 fontSize: 4,
+                                 fontWeight: 500,
+                                 textAnchor: "middle"
+                               }}
+                             />
+                           }
                             style={{ data: { fill: "#f76c6c", marginRight: 10} }}
                             data={result}
                             x="from"
