@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './Main.component.styles.css'
+import { Result, States } from '../interfaces/interfaces'
+
 import { BoxLoading } from 'react-loadingg';
 import {  VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryTooltip } from 'victory';
-import { Result, States } from '../interfaces/interfaces'
+import './Main.component.styles.css'
 
 const setStartDate = () => {
     let startDate = new Date();
@@ -22,6 +23,7 @@ const MainComponnet: React.FC = () => {
     });    
  
     const { startDate, endDate, loading, result } = state;
+    
     useEffect(() => {
         fetch(`https://api.carbonintensity.org.uk/intensity/${startDate}/${endDate}`)
             .then(response => response.json())
@@ -38,18 +40,18 @@ const MainComponnet: React.FC = () => {
             {loading && <BoxLoading size='large' color='#f8e9a1' /> }
             <div className='view'>
                     {!loading 
-                        &&
-                        <VictoryChart theme={VictoryTheme.material}>
-                            <VictoryAxis dependentAxis />   
-                            <VictoryAxis 
-                                fixLabelOverlap
-                                padding={10}
-                                tickFormat={(y) => (`${y.slice(11,16)}`)}
-                            />                     
-                            <VictoryBar
-                            labels={({ datum }) => `Date: ${datum.from} int: ${datum.intensity.actual}`}
+                    &&
+                    <VictoryChart theme={VictoryTheme.material}>
+                        <VictoryAxis dependentAxis />   
+                        <VictoryAxis 
+                            fixLabelOverlap
+                            padding={10}
+                            tickFormat={(y) => (`${y.slice(11,16)}`)}
+                        />                     
+                        <VictoryBar
+                            labels={({ datum }) => `Date: ${datum.from.replace('Z', '').replace('T', ' ')} int: ${datum.intensity.actual}`}
                             labelComponent={
-                                <VictoryTooltip
+                            <VictoryTooltip
                                 flyoutWidth={60}
                                 flyoutHeight={25}
                                 cornerRadius={5}
@@ -67,12 +69,12 @@ const MainComponnet: React.FC = () => {
                                 }}
                                 />
                             }
-                            style={{ data: { fill: "#f76c6c", marginRight: 10} }}
-                            data={result}
-                            x="from"
-                            y="intensity.actual"
-                            />
-                        </VictoryChart>
+                        style={{ data: { fill: "#f76c6c", marginRight: 10} }}
+                        data={result}
+                        x="from"
+                        y="intensity.actual"
+                        />
+                    </VictoryChart>
                     }
             </div>
         </div>
