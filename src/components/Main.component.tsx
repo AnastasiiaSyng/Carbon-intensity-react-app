@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Main.component.styles.css'
 import { BoxLoading } from 'react-loadingg';
 import {  VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryTooltip } from 'victory';
-
+import { Result, States } from '../interfaces/interfaces'
 
 const setStartDate = () => {
     let startDate = new Date();
@@ -13,8 +13,8 @@ const setEndDate = () => {
     return new Date().toISOString().substring(0, 19)
 }
 
-const MainComponnet = () => {
-    const [state, setState] = useState({
+const MainComponnet: React.FC = () => {
+    const [state, setState] = useState<States<Result>>({
         startDate: setStartDate(),
         endDate: setEndDate(),
         result: [],
@@ -36,44 +36,45 @@ const MainComponnet = () => {
         <div className='container'>
             <h1>Carbon intensity level for the last 24 hours</h1>
             {loading && <BoxLoading size='large' color='#f8e9a1' /> }
-          <div className='view'>
-                {!loading &&
-                    <VictoryChart theme={VictoryTheme.material}>
-                        <VictoryAxis dependentAxis />   
-                        <VictoryAxis 
-                            fixLabelOverlap
-                            padding={10}
-                            tickFormat={(y) => (`${y.slice(11,16)}`)}
-                        />                     
-                        <VictoryBar
-                           labels={({ datum }) => `Date: ${datum.from} int: ${datum.intensity.actual}`}
-                           labelComponent={
-                             <VictoryTooltip
-                               flyoutWidth={60}
-                               flyoutHeight={25}
-                               cornerRadius={5}
-                               pointerLength={20}
-                               flyoutStyle={{
-                                 stroke: "#868C97",
-                                 strokeWidth: 2,
-                                 fill: "#FFFFFF"
-                               }}
-                               style={{
-                                 fill: "#868C97",
-                                 fontSize: 4,
-                                 fontWeight: 500,
-                                 textAnchor: "middle"
-                               }}
-                             />
-                           }
+            <div className='view'>
+                    {!loading 
+                        &&
+                        <VictoryChart theme={VictoryTheme.material}>
+                            <VictoryAxis dependentAxis />   
+                            <VictoryAxis 
+                                fixLabelOverlap
+                                padding={10}
+                                tickFormat={(y) => (`${y.slice(11,16)}`)}
+                            />                     
+                            <VictoryBar
+                            labels={({ datum }) => `Date: ${datum.from} int: ${datum.intensity.actual}`}
+                            labelComponent={
+                                <VictoryTooltip
+                                flyoutWidth={60}
+                                flyoutHeight={25}
+                                cornerRadius={5}
+                                pointerLength={20}
+                                flyoutStyle={{
+                                    stroke: "#868C97",
+                                    strokeWidth: 2,
+                                    fill: "#FFFFFF"
+                                }}
+                                style={{
+                                    fill: "#868C97",
+                                    fontSize: 4,
+                                    fontWeight: 500,
+                                    textAnchor: "middle"
+                                }}
+                                />
+                            }
                             style={{ data: { fill: "#f76c6c", marginRight: 10} }}
                             data={result}
                             x="from"
                             y="intensity.actual"
-                        />
-                    </VictoryChart>
-                }
-          </div>
+                            />
+                        </VictoryChart>
+                    }
+            </div>
         </div>
     )
 }
